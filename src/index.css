@@ -1,0 +1,60 @@
+﻿/* src/index.css */
+@import "tailwindcss";
+
+@theme {
+  /* Paleta sobria: azul marino institucional y un dorado envejecido, sin saturación */
+  --color-brand-blue: #1C2541;
+  /* Dorados tomados del logo */
+  --color-brand-gold: #B37701;
+  --color-brand-gold-light: #E7C456;
+  --color-brand-navy-dark: #11151F;
+  --color-brand-navy-light: #2C3550;
+
+  /* Degradado dorado del logo (de izquierda a derecha) */
+  --color-logo-gold-claro: #E7C456;
+  --color-logo-gold-oscuro: #B37701;
+
+  /* Tipografía: Caslon (clásica, de imprenta) para títulos y Source Sans para el texto */
+  --font-serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+  --font-sans: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+}
+
+/* Texto con el degradado dorado del logo.
+   En modo claro el degradado es un poco más oscuro para que se lea bien sobre blanco. */
+:root {
+  --texto-dorado-desde: #C29A2E;
+  --texto-dorado-hasta: #976200;
+}
+
+.dark {
+  --texto-dorado-desde: var(--color-logo-gold-claro);
+  --texto-dorado-hasta: var(--color-logo-gold-oscuro);
+}
+
+@utility texto-dorado {
+  background-image: linear-gradient(90deg, var(--texto-dorado-desde), var(--texto-dorado-hasta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Los iconos dentro de un texto dorado no pueden recortar el degradado: van en dorado sólido */
+.texto-dorado svg {
+  color: var(--texto-dorado-hasta);
+}
