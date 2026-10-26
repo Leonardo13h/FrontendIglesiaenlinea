@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { zonas } from '../../data/rediles'
 import { whatsappConMensaje } from '../../data/contacto'
 
@@ -21,7 +22,10 @@ const Icono = ({ d, className = 'w-4 h-4 text-brand-gold' }) => (
 // Texto con singular o plural según la cantidad. Ej.: plural(1, "Célula", "Células") → "1 Célula"
 const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`
 
-// Tarjeta de una célula con su líder, lugar, horario y botón para unirse por WhatsApp
+// "Ministra" o "Ministro" según el campo "genero" de los datos (vacío: "Ministro(a)")
+const titulo = (genero) => (genero === 'F' ? 'Ministra' : genero === 'M' ? 'Ministro' : 'Ministro(a)')
+
+// Tarjeta de una célula con su ministro, lugar, horario y botón para unirse por WhatsApp
 const Celula = ({ celula, redil }) => {
   const mensaje = `Hola, quisiera más información sobre la célula "${celula.nombre}" del ${redil.nombre}`
   return (
@@ -31,7 +35,7 @@ const Celula = ({ celula, redil }) => {
         <div className="space-y-1.5 text-xs text-slate-600 dark:text-gray-300 transition-colors duration-300">
           <p className="flex items-center gap-2">
             <Icono d={iconos.persona} className="w-3.5 h-3.5 texto-dorado" />
-            <span>Líder: <strong className="font-medium text-slate-800 dark:text-white">{celula.lider}</strong></span>
+            <span>{titulo(celula.genero)}: <strong className="font-medium text-slate-800 dark:text-white">{celula.ministro}</strong></span>
           </p>
           {celula.lugar && (
             <p className="flex items-center gap-2">
@@ -61,17 +65,22 @@ const Celula = ({ celula, redil }) => {
 
 // Bloque de un redil con su ministro y la cuadrícula de sus células
 const Redil = ({ redil }) => (
-  <div className="bg-slate-50 dark:bg-brand-blue/10 border border-slate-200 dark:border-brand-blue/20 rounded-2xl p-5 transition-colors duration-300">
+  <div id={`redil-${redil.id}`} className="scroll-mt-28 bg-slate-50 dark:bg-brand-blue/10 border border-slate-200 dark:border-brand-blue/20 rounded-2xl p-5 transition-colors duration-300">
     <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-brand-gold/10 flex items-center justify-center">
           <Icono d={iconos.casa} className="w-5 h-5 texto-dorado" />
         </div>
         <div>
-          <h4 className="font-bold text-slate-800 dark:text-white transition-colors duration-300">{redil.nombre}</h4>
-          <p className="text-xs text-slate-500 dark:text-gray-400 transition-colors duration-300">
-            Ministro a cargo: <span className="font-semibold text-slate-700 dark:text-slate-200">{redil.ministro}</span>
-          </p>
+          <h4 className="font-bold text-slate-800 dark:text-white transition-colors duration-300">
+            {redil.nombre}
+            {redil.territorio && <span className="texto-dorado"> · {redil.territorio}</span>}
+          </h4>
+          {redil.ministro && (
+            <p className="text-xs text-slate-500 dark:text-gray-400 transition-colors duration-300">
+              {titulo(redil.genero)} a cargo: <span className="font-semibold text-slate-700 dark:text-slate-200">{redil.ministro}</span>
+            </p>
+          )}
           {redil.comprende && (
             <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-500 dark:text-gray-400 transition-colors duration-300">
               <Icono d={iconos.ubicacion} className="w-3.5 h-3.5 texto-dorado" />
@@ -80,22 +89,29 @@ const Redil = ({ redil }) => (
           )}
         </div>
       </div>
-      <span className="px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-700 dark:bg-purple-500/10 dark:border-purple-400/30 dark:text-purple-300 text-xs font-semibold">
-        {plural(redil.celulas.length, 'Célula', 'Células')}
-      </span>
+      {redil.celulas.length > 0 && (
+        <span className="px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-700 dark:bg-purple-500/10 dark:border-purple-400/30 dark:text-purple-300 text-xs font-semibold">
+          {plural(redil.celulas.length, 'Célula', 'Células')}
+        </span>
+      )}
     </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {redil.celulas.map((celula) => (
-        <Celula key={celula.nombre} celula={celula} redil={redil} />
-      ))}
-    </div>
+    {redil.celulas.length > 0 ? (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {redil.celulas.map((celula) => (
+          <Celula key={celula.nombre} celula={celula} redil={redil} />
+        ))}
+      </div>
+    ) : (
+      <p className="text-sm text-slate-500 dark:text-gray-400">Muy pronto publicaremos las células de este redil.</p>
+    )}
   </div>
 )
 
 // Zona desplegable: al tocarla muestra u oculta sus rediles
 const Zona = ({ zona, abierta, onToggle }) => (
   <div
-    className={`bg-white dark:bg-brand-blue/10 border rounded-3xl shadow-sm dark:shadow-none transition-all duration-300 ${
+    id={`zona-${zona.id}`}
+    className={`scroll-mt-28 bg-white dark:bg-brand-blue/10 border rounded-3xl shadow-sm dark:shadow-none transition-all duration-300 ${
       abierta ? 'border-brand-gold/60 shadow-md' : 'border-slate-200 dark:border-brand-blue/30 hover:shadow-md'
     }`}
   >
@@ -124,7 +140,7 @@ const Zona = ({ zona, abierta, onToggle }) => (
 
       <div className="flex flex-wrap items-center gap-2 md:gap-3">
         <div className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-brand-blue/40 text-center">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500">Ministro de zona</p>
+          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-gray-500">{titulo(zona.genero)} de zona</p>
           <p className="text-sm font-semibold text-slate-800 dark:text-white flex items-center justify-center gap-1.5 transition-colors duration-300">
             <Icono d={iconos.persona} className="w-3.5 h-3.5 text-purple-500" />
             {zona.ministro}
@@ -164,6 +180,26 @@ const Zona = ({ zona, abierta, onToggle }) => (
  */
 const RedilesCelulas = () => {
   const [abiertas, setAbiertas] = useState([])
+  const { hash } = useLocation()
+  const destinoPendiente = useRef(null)
+
+  // Si se llega con un enlace como /misiones#zona-2 o /misiones#redil-2 (menú "Buscar mi grupo"
+  // del Inicio), abre esa zona y baja hasta ella o hasta el redil
+  useEffect(() => {
+    const [, tipo, numero] = hash.match(/^#(zona|redil)-(\d+)$/) || []
+    const id = Number(numero)
+    const zona = zonas.find((z) => (tipo === 'zona' ? z.id === id : z.rediles.some((r) => r.id === id)))
+    if (!zona) return
+    destinoPendiente.current = hash.slice(1)
+    setAbiertas((prev) => (prev.includes(zona.id) ? prev : [...prev, zona.id]))
+  }, [hash])
+
+  useEffect(() => {
+    const destino = destinoPendiente.current && document.getElementById(destinoPendiente.current)
+    if (!destino) return
+    destino.scrollIntoView({ behavior: 'smooth' })
+    destinoPendiente.current = null
+  }, [abiertas, hash])
 
   const alternar = (id) =>
     setAbiertas((prev) => (prev.includes(id) ? prev.filter((z) => z !== id) : [...prev, id]))

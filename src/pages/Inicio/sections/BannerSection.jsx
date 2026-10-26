@@ -30,7 +30,7 @@ const BannerSection = () => {
                 </h1>
 
                 <p className="mt-6 text-sm sm:text-lg text-slate-900 dark:text-white max-w-3xl mx-auto leading-relaxed font-medium transition-colors duration-300">
-                    Ser una iglesia firmemente establecida en el fundamento apostólico, con un carácter profundamente ministerial y misionero. Buscamos consolidar familias sólidas y ministerios maduros.
+                    Somos una iglesia firmemente establecida sobre el fundamento apostólico, con un carácter profundamente ministerial y misionero. Buscamos consolidar familias sólidas y formar ministerios maduros.
                 </p>
 
                 <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
@@ -44,7 +44,7 @@ const BannerSection = () => {
                         to="/nosotros"
                         className="w-full sm:w-auto bg-transparent hover:bg-slate-100 dark:hover:bg-brand-navy-light/50 border border-slate-400 dark:border-slate-500 text-slate-800 dark:text-white font-semibold px-8 py-4 rounded-md transition-colors duration-300 text-center text-sm"
                     >
-                        Conoce nuestra Visión
+                        Conoce nuestra visión
                     </Link>
                 </div>
             </div>

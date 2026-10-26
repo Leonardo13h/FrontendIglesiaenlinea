@@ -5,9 +5,10 @@ import ConferenciaSection from './sections/ConferenciaSection'
 import HistorialConferenciasSection from './sections/HistorialConferenciasSection'
 import PredicacionesSection from './sections/PredicacionesSection'
 import TestimoniosSection from './sections/TestimoniosSection'
+import SugerenciasSection from './sections/SugerenciasSection'
 import UbicacionSatelital from '../../components/common/UbicacionSatelital'
 
-// Testimonios: los escriben los visitantes. Cambia a false para ocultar la sección.
+// Testimonios en video. Cambia a false para ocultar la sección.
 const MOSTRAR_TESTIMONIOS = true
 
 // Para cambiar el orden de la página, solo mueve las secciones de lugar.
@@ -35,7 +36,10 @@ const Inicio = () => {
             {/* 7. Testimonios (se muestra según MOSTRAR_TESTIMONIOS, arriba) */}
             {MOSTRAR_TESTIMONIOS && <TestimoniosSection/>}
 
-            {/* 8. Ubicación (la misma tarjeta de la página de Contacto) */}
+            {/* 8. Sugerencias para mejorar la página (llegan al correo de la iglesia) */}
+            <SugerenciasSection/>
+
+            {/* 9. Ubicación (la misma tarjeta de la página de Contacto) */}
             <section className="py-20 px-4 sm:px-6 lg:px-8 border-t border-slate-200 dark:border-brand-blue/20 transition-colors duration-300">
                 <UbicacionSatelital/>
             </section>

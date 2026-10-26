@@ -29,7 +29,7 @@ const Formacion = () => {
       title: 'La Casa de mi Padre',
       category: 'Vida Cristiana',
       duration: '12 Lecciones',
-      description: 'Capacitación integral para nuevos líderes de células y rediles, enfocada en la visitación y el discipulado.',
+      description: 'Capacitación integral para nuevos ministros de células y rediles, enfocada en la visitación y el discipulado.',
       status: 'Requiere suscripción',
     },
   ]

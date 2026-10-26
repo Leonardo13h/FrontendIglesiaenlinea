@@ -56,10 +56,7 @@ const Nosotros = () => {
             
             <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-4 transition-colors duration-300">Visión</h3>
             <p className="text-slate-600 dark:text-gray-300 leading-relaxed font-light transition-colors duration-300">
-              Ser una iglesia firmemente establecida en el fundamento apostólico, con un carácter profundamente ministerial y misionero.
-            </p>
-            <p className="text-slate-600 dark:text-gray-300 leading-relaxed font-light mt-4 transition-colors duration-300">
-              Buscamos consolidar <strong className="texto-dorado font-semibold">familias sólidas y ministerios maduros</strong> que impulsen un avivamiento en San Diego y toda Venezuela, estando listos para responder con obediencia y poder al llamado de Dios en cualquier parte del mundo.
+              Ser una iglesia firmemente establecida sobre el fundamento apostólico, con un carácter profundamente ministerial y misionero, que consolide <strong className="texto-dorado font-semibold">familias sólidas</strong> y forme <strong className="texto-dorado font-semibold">ministerios maduros</strong> que impulsen un avivamiento en San Diego y en toda Venezuela, preparados para responder con obediencia y poder al llamado de Dios en cualquier parte del mundo.
             </p>
           </div>
 
@@ -83,7 +80,7 @@ const Nosotros = () => {
               <li>• Bautismo del Espíritu Santo con la señal inicial de hablar en lenguas.</li>
             </ul>
             <p className="text-slate-600 dark:text-gray-300 leading-relaxed font-light transition-colors duration-300">
-              Trabajamos activamente para edificar familias sólidas e impulsar un avivamiento espiritual que transforme el municipio San Diego y nuestra nación, Venezuela, siendo de bendición global.
+              Trabajamos activamente para edificar familias sólidas e impulsar un avivamiento espiritual que transforme el municipio San Diego y nuestra nación, Venezuela, extendiendo nuestro mensaje de bendición a las naciones del mundo.
             </p>
           </div>
         </div>

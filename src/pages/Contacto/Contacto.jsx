@@ -1,28 +1,43 @@
 import { useState } from 'react'
 import UbicacionSatelital from '../../components/common/UbicacionSatelital'
 import { contacto } from '../../data/contacto'
+import { enviarMensajeContacto } from '../../services/correo'
+
+// Valores iniciales del formulario ("trampa" es el campo oculto contra robots)
+const formularioVacio = { name: '', email: '', phone: '', message: '', trampa: false }
 
 /**
  * Página de Contacto: datos de la iglesia, formulario de mensaje y ubicación.
- * Nota: el envío del formulario es simulado (muestra el mensaje de "recibido" pero no lo envía a ningún lado).
+ * El formulario llega al correo de la iglesia (src/services/correo.js).
  */
 const Contacto = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  })
+  const [formData, setFormData] = useState(formularioVacio)
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Simulated contact form submission
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
-      setFormData({ name: '', email: '', phone: '', message: '' })
-    }, 4000)
+    setSending(true)
+    setError('')
+    try {
+      await enviarMensajeContacto({
+        nombre: formData.name.trim(),
+        correo: formData.email.trim(),
+        telefono: formData.phone.trim(),
+        mensaje: formData.message.trim(),
+        trampa: formData.trampa,
+      })
+      setSubmitted(true)
+      setTimeout(() => {
+        setSubmitted(false)
+        setFormData(formularioVacio)
+      }, 4000)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -141,6 +156,17 @@ const Contacto = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+                {/* Campo oculto contra robots: las personas no lo ven */}
+                <input
+                  type="checkbox"
+                  name="botcheck"
+                  checked={formData.trampa}
+                  onChange={(e) => setFormData({ ...formData, trampa: e.target.checked })}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-[11px] font-semibold text-slate-400 dark:text-gray-400 uppercase tracking-wider mb-1 transition-colors duration-300">Nombre Completo</label>
@@ -193,11 +219,14 @@ const Contacto = () => {
                   ></textarea>
                 </div>
 
+                {error && <p className="text-sm font-semibold text-red-600 dark:text-red-400" role="alert">{error}</p>}
+
                 <button
                   type="submit"
-                  className="w-full bg-linear-to-r from-logo-gold-claro to-logo-gold-oscuro hover:brightness-110 text-brand-navy-dark font-bold py-3.5 px-6 rounded-xl shadow-md transition-all duration-300 text-sm hover:-translate-y-0.5 cursor-pointer"
+                  disabled={sending}
+                  className="w-full bg-linear-to-r from-logo-gold-claro to-logo-gold-oscuro hover:brightness-110 disabled:opacity-60 text-brand-navy-dark font-bold py-3.5 px-6 rounded-xl shadow-md transition-all duration-300 text-sm hover:-translate-y-0.5 cursor-pointer"
                 >
-                  Enviar Mensaje / Petición
+                  {sending ? 'Enviando…' : 'Enviar Mensaje / Petición'}
                 </button>
               </form>
             )}

@@ -60,14 +60,14 @@ export default function EstructuraIglesia() {
       <div className="max-w-7xl mx-auto">
         {/* Encabezado */}
         <div className="text-center mb-14">
-          <p className="text-sm font-semibold tracking-wider uppercase texto-dorado mb-3">Sistema celular</p>
+          <p className="text-sm font-semibold tracking-wider uppercase texto-dorado mb-3">Organigrama</p>
           <h2 className="text-3xl sm:text-5xl font-bold text-slate-800 dark:text-white transition-colors duration-300">
             Estructura de{" "}
             <span className="bg-gradient-to-r from-brand-gold to-brand-gold-light bg-clip-text text-transparent">la iglesia</span>
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-slate-600 dark:text-gray-400 transition-colors duration-300">
-            Una iglesia que se reúne en el templo y se multiplica en las casas. Mientras más cerca de la base,
-            más ministros y más familias alcanzadas.
+            Una iglesia que se reúne en el templo y se multiplica en las casas. A medida que la estructura se
+            extiende hacia las células, aumenta el número de ministros y de familias alcanzadas.
           </p>
         </div>
 
